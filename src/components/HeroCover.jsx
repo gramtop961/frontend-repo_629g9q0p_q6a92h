@@ -1,46 +1,68 @@
 import React from 'react';
 import Spline from '@splinetool/react-spline';
-import { Rocket, ShieldCheck } from 'lucide-react';
+import { Shield, ArrowRight, Sparkles } from 'lucide-react';
+import { motion } from 'framer-motion';
 
-const HeroCover = ({ onStartVerify }) => {
+const HeroCover = ({ onGetStarted }) => {
   return (
-    <section className="relative h-[85vh] w-full overflow-hidden bg-[#000814] text-white">
+    <section className="relative min-h-screen w-full bg-[#000814] overflow-hidden">
       <div className="absolute inset-0">
         <Spline
-          scene="https://prod.spline.design/vi0ijCQQJTRFc8LA/scene.splinecode"
+          scene="https://prod.spline.design/UZwPzv3lU6s76Zx5/scene.splinecode"
           style={{ width: '100%', height: '100%' }}
         />
       </div>
 
-      {/* Top gradient glow overlay */}
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#000814]/40 via-[#000814]/60 to-[#000814]" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#000814]/60 via-[#000814]/70 to-[#000814]" />
 
-      <div className="relative z-10 mx-auto flex h-full max-w-6xl flex-col items-center justify-center px-6 text-center">
-        <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-teal-300/30 bg-teal-300/10 px-3 py-1 text-xs tracking-wider text-teal-200 backdrop-blur">
-          <ShieldCheck className="h-3.5 w-3.5 text-teal-300" />
-          Digital Trust Universe
-        </div>
+      <div className="relative z-10 mx-auto flex min-h-screen max-w-6xl flex-col items-center justify-center px-6 text-center text-white">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-2 backdrop-blur"
+        >
+          <Sparkles className="h-4 w-4 text-[#00FFE0]" />
+          <span className="text-sm tracking-wide text-white/80">AI + Blockchain Verification</span>
+        </motion.div>
 
-        <h1 className="font-orbitron text-4xl font-extrabold leading-tight text-white drop-shadow md:text-6xl">
-          Certify: AI x Blockchain Verification
-        </h1>
-        <p className="mt-4 max-w-2xl text-sm text-teal-100/90 md:text-base">
-          Step into a cyber‑lab aesthetic where documents are scanned, analyzed, and secured on-chain.
-        </p>
+        <motion.h1
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, delay: 0.05 }}
+          className="font-semibold leading-tight"
+        >
+          <span className="block text-4xl sm:text-5xl md:text-6xl">Digital Trust Universe</span>
+          <span className="mt-2 block bg-gradient-to-r from-[#00FFE0] via-[#8A2BE2] to-[#FFD166] bg-clip-text text-2xl text-transparent sm:text-3xl">
+            Real-time authenticity scoring for your documents
+          </span>
+        </motion.h1>
 
-        <div className="mt-10">
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+          className="mt-5 max-w-2xl text-white/70"
+        >
+          Upload files and watch our AI perform provenance checks, tamper detection, and blockchain anchoring — all visualized in an immersive flow.
+        </motion.p>
+
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3 }}
+          className="mt-10 flex items-center gap-4"
+        >
           <button
-            onClick={onStartVerify}
-            className="group relative inline-flex items-center gap-3 overflow-hidden rounded-full bg-gradient-to-r from-[#00FFE0] to-[#6BE4FF] px-7 py-3 text-[#001219] transition-transform hover:scale-[1.02] active:scale-[0.98]"
+            type="button"
+            onClick={onGetStarted}
+            className="group inline-flex items-center gap-2 rounded-lg bg-[#00FFE0] px-6 py-3 font-medium text-[#001219] transition hover:brightness-110"
           >
-            <span className="absolute inset-0 -z-[1] animate-pulse bg-white/20 blur-2xl" />
-            <Rocket className="h-5 w-5" />
-            <span className="font-semibold">Verify a Document</span>
+            <Shield className="h-5 w-5" />
+            Verify a Document
+            <ArrowRight className="h-5 w-5 transition-transform group-hover:translate-x-0.5" />
           </button>
-          <div className="mt-3 text-xs text-teal-100/70">
-            Neon HUD, holographic motion, and precision engineering vibes.
-          </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   );

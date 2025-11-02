@@ -1,99 +1,77 @@
 import React from 'react';
-import { Cpu, ScanLine, Fingerprint, FileCheck2 } from 'lucide-react';
+import { Activity, CheckCircle2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
-const steps = [
-  { icon: ScanLine, label: 'Metadata integrity' },
-  { icon: Fingerprint, label: 'Signature & fonts' },
-  { icon: Cpu, label: 'AI pattern checks' },
-  { icon: FileCheck2, label: 'Visual forgery scan' },
+const checks = [
+  'Provenance model scan',
+  'Metadata integrity check',
+  'Visual tamper detection',
+  'Hashing & anchoring prep',
+  'Blockchain proof lookup',
 ];
 
 const AnalysisVisualizer = ({ progress = 0 }) => {
-  const activeIndex = Math.min(steps.length - 1, Math.floor((progress / 100) * steps.length));
-
   return (
-    <section className="relative w-full bg-[#000814] py-16 text-white">
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(255,209,102,0.08),transparent_60%)]" />
-      <div className="relative mx-auto max-w-5xl px-6">
-        <h2 className="font-orbitron text-3xl font-bold text-[#FFD166] md:text-4xl">
-          AI Analysis Phase
-        </h2>
-        <p className="mt-2 text-sm text-teal-100/80">
-          Layers peel, neurons light, and each check locks in with a glow.
-        </p>
+    <section className="relative min-h-screen w-full bg-[#000814] text-white">
+      <div className="mx-auto max-w-5xl px-6 pt-24">
+        <div className="mb-10">
+          <h2 className="text-2xl font-semibold">Analyzing document</h2>
+          <p className="text-white/70">This usually takes less than 30 seconds.</p>
+        </div>
 
-        <div className="mt-8 grid gap-6 md:grid-cols-2">
-          <div className="relative rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-            <div className="mb-4 text-xs uppercase tracking-widest text-teal-200/80">Live checks</div>
-            <div className="space-y-3">
-              {steps.map((s, i) => {
-                const Icon = s.icon;
-                const active = i <= activeIndex;
-                return (
-                  <div key={s.label} className={`flex items-center justify-between rounded-md border px-3 py-2 ${active ? 'border-teal-300/50 bg-teal-300/10' : 'border-white/10 bg-white/5'}`}>
-                    <div className="flex items-center gap-3">
-                      <Icon className={`h-4 w-4 ${active ? 'text-teal-300' : 'text-teal-200/60'}`} />
-                      <span className={active ? 'text-teal-50' : 'text-teal-100/70'}>{s.label}</span>
-                    </div>
-                    <div className={`h-2 w-2 rounded-full ${active ? 'bg-teal-300 shadow-[0_0_12px_2px_#00FFE0]' : 'bg-white/20'}`} />
-                  </div>
-                );
-              })}
+        <div className="grid gap-8 md:grid-cols-2">
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="rounded-2xl border border-white/10 bg-white/[0.06] p-6 backdrop-blur"
+          >
+            <div className="mb-4 flex items-center gap-2">
+              <Activity className="h-5 w-5 text-[#8A2BE2]" />
+              <h3 className="font-medium">Live checks</h3>
             </div>
-
-            <div className="mt-6">
-              <div className="mb-2 flex items-center justify-between text-xs text-teal-100/70">
-                <span>Progress</span>
-                <span>{progress}%</span>
-              </div>
-              <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/10">
-                <motion.div
-                  className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-[#00FFE0] via-[#6BE4FF] to-[#8A2BE2]"
-                  style={{ width: `${progress}%` }}
-                  initial={{ width: 0 }}
-                  animate={{ width: `${progress}%` }}
-                  transition={{ type: 'spring', stiffness: 60, damping: 20 }}
-                />
-              </div>
-              <div className="mt-4 text-[10px] text-teal-200/70">
-                Scan wave emits a blue light sweep as analysis proceeds.
-              </div>
-            </div>
-          </div>
-
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-6 backdrop-blur">
-            <div className="mb-4 text-xs uppercase tracking-widest text-teal-200/80">Holographic document</div>
-            <div className="relative h-64 w-full overflow-hidden rounded-xl border border-teal-300/20 bg-gradient-to-br from-[#04121b] to-[#07141d]">
-              {/* layered cards to simulate peel apart */}
-              {[0, 1, 2].map((layer) => (
-                <motion.div
-                  key={layer}
-                  className="absolute left-6 top-6 h-40 w-64 rounded-lg border border-white/10 bg-white/10"
-                  style={{ backdropFilter: 'blur(2px)' }}
-                  animate={{
-                    x: [0, layer * 10, 0],
-                    y: [0, layer * -6, 0],
-                    opacity: [0.6, 1, 0.8],
-                  }}
-                  transition={{ duration: 3 + layer * 0.3, repeat: Infinity, ease: 'easeInOut' }}
-                />
+            <ul className="space-y-3">
+              {checks.map((label, idx) => (
+                <li key={label} className="flex items-center gap-3 text-sm">
+                  <div className={`h-2 w-2 rounded-full ${progress > (idx + 1) * 18 ? 'bg-[#00FFE0]' : 'bg-white/30'}`} />
+                  <span className={progress > (idx + 1) * 18 ? 'text-white' : 'text-white/70'}>{label}</span>
+                  {progress > (idx + 1) * 18 && (
+                    <CheckCircle2 className="ml-auto h-4 w-4 text-[#00FFE0]" />
+                  )}
+                </li>
               ))}
-              {/* neuron pulses */}
-              {[...Array(12)].map((_, i) => (
-                <motion.span
+            </ul>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="relative overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-b from-[#8A2BE2]/10 to-[#00FFE0]/10 p-6"
+          >
+            <div className="mb-4 flex items-center justify-between">
+              <h3 className="font-medium">Progress</h3>
+              <span className="text-sm text-white/70">{Math.min(progress, 100)}%</span>
+            </div>
+            <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
+              <div
+                className="h-full rounded-full bg-gradient-to-r from-[#8A2BE2] to-[#00FFE0] transition-[width] duration-300"
+                style={{ width: `${Math.min(progress, 100)}%` }}
+              />
+            </div>
+
+            <div className="mt-8 grid grid-cols-3 gap-4">
+              {[0, 1, 2].map((i) => (
+                <motion.div
                   key={i}
-                  className="absolute h-1.5 w-1.5 rounded-full bg-[#00FFE0]"
-                  style={{ left: `${10 + (i * 7) % 80}%`, top: `${20 + (i * 11) % 60}%` }}
-                  animate={{ opacity: [0.2, 1, 0.2], scale: [1, 1.6, 1] }}
-                  transition={{ duration: 1.8 + (i % 5) * 0.2, repeat: Infinity }}
-                />
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ delay: 0.1 * i }}
+                  className="h-28 rounded-xl border border-white/10 bg-white/[0.04]"
+                >
+                  <div className="h-full w-full animate-pulse rounded-xl bg-gradient-to-br from-white/5 via-white/0 to-white/5" />
+                </motion.div>
               ))}
-              <div className="absolute bottom-3 right-3 rounded-full border border-teal-300/30 bg-teal-300/10 px-2 py-1 text-[10px] text-teal-100">
-                Hologram mode
-              </div>
             </div>
-          </div>
+          </motion.div>
         </div>
       </div>
     </section>
