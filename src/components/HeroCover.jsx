@@ -1,16 +1,22 @@
-import React from 'react';
-import Spline from '@splinetool/react-spline';
+import React, { Suspense } from 'react';
 import { Shield, ArrowRight, Sparkles } from 'lucide-react';
 import { motion } from 'framer-motion';
+
+// Lazy-load Spline to avoid any rendering race causing a blank screen
+const LazySpline = React.lazy(() => import('@splinetool/react-spline'));
 
 const HeroCover = ({ onGetStarted }) => {
   return (
     <section className="relative min-h-screen w-full bg-[#000814] overflow-hidden">
       <div className="absolute inset-0">
-        <Spline
-          scene="https://prod.spline.design/UZwPzv3lU6s76Zx5/scene.splinecode"
-          style={{ width: '100%', height: '100%' }}
-        />
+        <Suspense
+          fallback={<div className="h-full w-full bg-[radial-gradient(circle_at_30%_20%,#0b1b3e_0%,#000814_60%)]" />}
+        >
+          <LazySpline
+            scene="https://prod.spline.design/UZwPzv3lU6s76Zx5/scene.splinecode"
+            style={{ width: '100%', height: '100%' }}
+          />
+        </Suspense>
       </div>
 
       <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-[#000814]/60 via-[#000814]/70 to-[#000814]" />
